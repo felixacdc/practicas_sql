@@ -71,3 +71,53 @@
 -- Eliminar datos de una tabla
 	DELETE FROM Store_Information
 	WHERE Store_Name = 'Los Angeles';
+
+-- Union de tablas
+	-- UNION: solo selecciona los registros distintos si el registro se repite en las tablas solo lo selecciona una vez
+		SELECT ProductModelID, Name  
+		FROM Production.ProductModel  
+		WHERE ProductModelID NOT IN (3, 4)  
+		UNION  
+		SELECT ProductModelID, Name  
+		FROM dbo.Gloves  
+		ORDER BY Name;  
+	-- Inner Join
+		SELECT columns
+		FROM table1 
+		INNER JOIN table2
+		ON table1.column = table2.column;
+	-- Group By
+		SELECT ColumnA, ColumnB FROM T GROUP BY ColumnA, ColumnB;
+		SELECT ColumnA + ColumnB FROM T GROUP BY ColumnA, ColumnB;
+		SELECT ColumnA + ColumnB FROM T GROUP BY ColumnA + ColumnB;
+		SELECT ColumnA + ColumnB + constant FROM T GROUP BY ColumnA, ColumnB;
+	-- Having
+		SELECT SalesOrderID, SUM(LineTotal) AS SubTotal  
+		FROM Sales.SalesOrderDetail  
+		GROUP BY SalesOrderID  
+		HAVING SUM(LineTotal) > 100000.00  
+		ORDER BY SalesOrderID;
+	-- Like
+		-- contenga la cadena
+		select * from libros
+		where autor like "%Borges%";
+		-- empiese con la cadena
+		select * from libros
+		where titulo like 'M%';
+		-- que no sea como
+		select * from libros
+		where titulo not like 'M%';
+		-- el _ representa cualquier caracter
+		select * from libros
+  		where autor like "%Carrol_";
+		-- ... like '[a-cf-i]%': busca cadenas que comiencen con a,b,c,f,g,h o i;
+		-- ... like '[-acfi]%': busca cadenas que comiencen con -,a,c,f o i;
+		-- ... like 'A[_]9%': busca cadenas que comiencen con 'A_9';
+		-- ... like 'A[nm]%': busca cadenas que comiencen con 'An' o 'Am'.
+	-- Between
+		SELECT e.FirstName, e.LastName, ep.Rate  
+		FROM HumanResources.vEmployee e   
+		JOIN HumanResources.EmployeePayHistory ep   
+		    ON e.BusinessEntityID = ep.BusinessEntityID  
+		WHERE ep.Rate BETWEEN 27 AND 30  
+		ORDER BY ep.Rate; 
