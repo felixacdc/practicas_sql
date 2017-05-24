@@ -89,3 +89,54 @@
 -- Eliminar datos
 	DELETE FROM customers
 	WHERE last_name = 'Smith';
+
+-- Union
+	-- El UNION operador, lo que elimina duplicar las filas seleccionadas.
+	SELECT location_id, department_name "Department", TO_CHAR(NULL) "Warehouse" 
+	FROM departments
+	UNION
+	SELECT location_id, TO_CHAR(NULL) "Department", warehouse_name 
+	FROM warehouses;
+	-- El UNIONoperador devuelve sólo filas distintas que aparecen en cualquiera resultado, 
+	-- mientras que el UNION ALLoperador devuelve todas las filas.
+	SELECT location_id  FROM locations 
+	UNION ALL 
+	SELECT location_id  FROM departments;
+	-- El INTERSECToperador, que devuelve sólo las filas devueltas por ambas consultas
+	SELECT product_id FROM inventories
+	INTERSECT
+	SELECT product_id FROM order_items;
+	-- El MINUSoperador, que devuelve filas aparecen unicamente devueltos por la primera consulta, pero no por el segundo.
+	SELECT product_id FROM inventories
+	MINUS
+	SELECT product_id FROM order_items;
+-- Inner Join
+	SELECT *
+	FROM SAMP.EMPLOYEE INNER JOIN SAMP.STAFF
+	ON EMPLOYEE.SALARY < STAFF.SALARY
+-- Group By
+	SELECT product, SUM(sale) AS "Total sales"
+	FROM order_details
+	GROUP BY product;
+-- Having
+	SELECT department, SUM(sales) AS "Total sales"
+	FROM order_details
+	GROUP BY department
+	HAVING SUM(sales) > 25000;
+-- Like
+	-- Comiense con la cadena
+	SELECT last_name
+	FROM customers
+	WHERE last_name LIKE 'Ap%';
+	-- Dentro de la cadena
+	SELECT last_name
+	FROM customers
+	WHERE last_name LIKE '%er%';
+	-- el _ representa cualquier caracter
+	SELECT supplier_name
+	FROM suppliers
+	WHERE supplier_name LIKE 'Sm_th';
+-- Between
+	SELECT *
+	FROM customers
+	WHERE customer_id BETWEEN 4000 AND 4999;
